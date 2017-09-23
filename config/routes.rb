@@ -4,5 +4,5 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  get '/callback', to: 'home#callback'
+  resources :responses
 end
