@@ -28,6 +28,13 @@ class ResponsesController < ApplicationController
 
     respond_to do |format|
       if @response.save
+        Bot.deliver({
+          recipient: {
+            id: User.first.mfbid 
+          },
+          message: { text: "New response is been added try #{@response.keyword} to view it" }
+        }, access_token: ENV['FB_PAGE_ACCESS_TOKEN'])
+
         format.html { redirect_to @response, notice: 'Response was successfully created.' }
         format.json { render :show, status: :created, location: @response }
       else
@@ -62,13 +69,13 @@ class ResponsesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_response
-      @response = Response.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_response
+    @response = Response.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def response_params
-      params.require(:response).permit(:reply, :keyword)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def response_params
+    params.require(:response).permit(:reply, :keyword)
+  end
 end
