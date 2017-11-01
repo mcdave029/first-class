@@ -33,7 +33,7 @@ class ResponsesController < ApplicationController
             id: User.first.mfbid 
           },
           message: { text: "New response is been added try #{@response.keyword} to view it" }
-        }, access_token: ENV['FB_PAGE_ACCESS_TOKEN'])
+        }, access_token: ENV['FB_ACCESS_TOKEN'])
 
         format.html { redirect_to @response, notice: 'Response was successfully created.' }
         format.json { render :show, status: :created, location: @response }
