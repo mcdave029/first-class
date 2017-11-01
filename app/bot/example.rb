@@ -2,9 +2,21 @@ include Facebook::Messenger
 
 Bot.on :message do |message|
   graph = Koala::Facebook::API.new(ENV['FB_ACCESS_TOKEN'])
-  fbuser_obj = graph.get_object( message.sender.fetch("id"))
+  fbuser_obj = graph.get_object(message.sender.fetch("id"))
 
-  Rails.logger.info "ID: #{message.id}, Sender: #{fbuser_obj.fetch('first_name')} #{fbuser_obj.fetch('last_name')}"
+  #create user
+  user =  User.find_or_initialize_by(fbid: fbuser_obj['id'])
+  user.mfbid = message.sender.fetch("id")
+  user.first_name = fbuser_obj.fetch('first_name')
+  user.last_name = fbuser_obj.fetch('last_name')
+  user.gender = fbuser_obj.fetch('gender')
+
+  if user.save
+    Rails.logger.info "ID: #{message.id}, Sender: #{user.fullname} saved!"
+  else
+    Rails.logger.warn "ID: #{message.id}, Sender: #{user.errors.full_messages.to_sentence} invalid!"
+  end
+
 
   arr_string = message.text.downcase.split(';')
   able_to_teach = arr_string.count == 2 && arr_string[0]&.include?('keyword:') && arr_string[1]&.include?('reply:')
