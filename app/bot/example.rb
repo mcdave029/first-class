@@ -1,7 +1,7 @@
 include Facebook::Messenger
 
 Bot.on :message do |message|
-  Rails.logger.info "Message: #{message}"
+  Rails.logger.info "ID: #{message.id}, Sender: #{message.sender}"
   arr_string = message.text.downcase.split(';')
   able_to_teach = arr_string.count == 2 && arr_string[0]&.include?('keyword:') && arr_string[1]&.include?('reply:')
   if able_to_teach
