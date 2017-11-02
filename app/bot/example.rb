@@ -39,7 +39,21 @@ Bot.on :message do |message|
 end
 
 Bot.on :postback do |postback|
-  Rails.logger.info "POSTBACK Sender: #{postback.sender}"
+  graph = Koala::Facebook::API.new(ENV['FB_ACCESS_TOKEN'])
+  fbuser_obj = graph.get_object(message.sender.fetch("id"))
+
+  #create user
+  user =  User.find_or_initialize_by(fbid: fbuser_obj['id'])
+  user.mfbid = message.sender.fetch("id")
+  user.first_name = fbuser_obj.fetch('first_name')
+  user.last_name = fbuser_obj.fetch('last_name')
+  user.gender = fbuser_obj.fetch('gender')
+
+  if user.save
+    Rails.logger.info "POSTBACK Sender: #{user.fullname} saved!"
+  else
+    Rails.logger.warn "POSTBACK Sender: #{user.errors.full_messages.to_sentence} invalid!"
+  end
 
   postback.reply(text: "Ohhh wow! lets get started!")
 end
