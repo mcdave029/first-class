@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   mount Facebook::Messenger::Server, at: 'bot'
 
   root 'home#index'
+  get '/set_profile', to: 'home#set_messenger_profile'
 
   resources :responses
 end
