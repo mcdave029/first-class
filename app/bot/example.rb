@@ -71,7 +71,7 @@ Bot.on :postback do |postback|
         ]
       }
     ]
-  }, access_token: ENV['FB_PAGE_ACCESS_TOKEN'])
+  }, access_token: ENV['FB_ACCESS_TOKEN'])
 
   postback.reply(text: "Ohhh wow! lets get started!")
 end
