@@ -37,3 +37,7 @@ Bot.on :message do |message|
   end
   message.reply(text: text)
 end
+
+Bot.on :postback do |postback|
+  Rails.logger.info "ID: #{postback.id}, Sender: #{postback.sender}"
+end
