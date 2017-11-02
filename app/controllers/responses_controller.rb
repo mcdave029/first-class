@@ -32,7 +32,14 @@ class ResponsesController < ApplicationController
           recipient: {
             id: User.first.mfbid 
           },
-          message: { text: "New response is been added try #{@response.keyword} to view it" }
+          message: { text: "New response is been added try #{@response.keyword} to view it. Messenger ID #{User.first.mfbid}" }
+        }, access_token: ENV['FB_ACCESS_TOKEN'])
+
+        Bot.deliver({
+          recipient: {
+            id: User.first.fbid 
+          },
+          message: { text: "New response is been added try #{@response.keyword} to view it. FB ID #{User.first.fbid}" }
         }, access_token: ENV['FB_ACCESS_TOKEN'])
 
         format.html { redirect_to @response, notice: 'Response was successfully created.' }
