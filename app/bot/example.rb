@@ -55,5 +55,23 @@ Bot.on :postback do |postback|
     Rails.logger.warn "POSTBACK Sender: #{user.errors.full_messages.to_sentence} invalid!"
   end
 
+  Facebook::Messenger::Profile.set({
+    persistent_menu: [
+      {
+        locale: 'default',
+        composer_input_disabled: false,
+        call_to_actions: [
+          {
+            title: "Test View",
+            type: "web_url",
+            url: "https://first-class-bot.herokuapp.com/?test=#{user.mfbid}",
+            messenger_extensions: true,
+            webview_height_ratio: "tall"
+          }
+        ]
+      }
+    ]
+  }, access_token: ENV['FB_PAGE_ACCESS_TOKEN'])
+
   postback.reply(text: "Ohhh wow! lets get started!")
 end

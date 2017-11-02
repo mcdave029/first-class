@@ -11,7 +11,7 @@ class HomeController < ApplicationController
       get_started: {
         payload: 'GET_STARTED_PAYLOAD'
       },
-      whitelisted_domains: [ 'https://first-class-bot.herokuapp.com/' ]
+      whitelisted_domains: [ root_url ]
     }, access_token: ENV['FB_ACCESS_TOKEN'])
 
     render :nothing => true
