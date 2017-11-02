@@ -40,11 +40,11 @@ end
 
 Bot.on :postback do |postback|
   graph = Koala::Facebook::API.new(ENV['FB_ACCESS_TOKEN'])
-  fbuser_obj = graph.get_object(message.sender.fetch("id"))
+  fbuser_obj = graph.get_object(postback.sender.fetch("id"))
 
   #create user
   user =  User.find_or_initialize_by(fbid: fbuser_obj['id'])
-  user.mfbid = message.sender.fetch("id")
+  user.mfbid = postback.sender.fetch("id")
   user.first_name = fbuser_obj.fetch('first_name')
   user.last_name = fbuser_obj.fetch('last_name')
   user.gender = fbuser_obj.fetch('gender')
